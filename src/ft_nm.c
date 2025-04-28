@@ -6,11 +6,14 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:45 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/28 15:56:00 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/28 17:41:22 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
+
+static char	get_file_type(char *file);
+static void	process(t_context *ctx, char *file);
 
 void	ft_nm(char *file)
 {
@@ -20,15 +23,15 @@ void	ft_nm(char *file)
 	switch (ctx.filetype)
 	{
 		case	1:
-			break;
 		case	2:
+			process(&ctx, file);
 			break;
 		default:
 			return ((void)ft_printf("nm: %s: file format not recognized\n", file));
 	}
 }
 
-char	get_file_type(char *file)
+static char	get_file_type(char *file)
 {
 	const int	fd = open_helper(file);
 	char		class;
@@ -45,4 +48,14 @@ char	get_file_type(char *file)
 		class = header.e_ident[EI_CLASS];
 	close(fd);
 	return(class);
+}
+
+static void	process(t_context *ctx, char *file)
+{
+	const int	fd = open_helper(file);
+	Elf32_Ehdr	header32;
+	Elf64_Ehdr	header64;
+	
+	if (ctx->filetype == )
+	close(fd);
 }
