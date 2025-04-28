@@ -1,0 +1,9 @@
+ft_nm
+.vscode/
+.build/
+*.o
+*.a
+*.d
+ft_ls
+ft_ls_bonus
+*.so
