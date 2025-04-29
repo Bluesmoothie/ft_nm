@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/29 20:35:58 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/29 20:49:22 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,18 @@ void	process(t_context *ctx)
 
 static void	get_section_header(t_context *ctx)
 {
-	const Elf32_Ehdr	*header32 = ctx->file;
-	const Elf64_Ehdr	*header64 = ctx->file;
+	Elf32_Ehdr	*header32;
+	Elf64_Ehdr	*header64;
 	
 	if (ctx->filetype == ELFCLASS32)
 	{
+		header32 = ctx->file;
 		ctx->sh_offset = header32->e_shoff;
 		ctx->sh_num = header32->e_shnum;
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
+		header64 = ctx->file;
 		ctx->sh_offset = header64->e_shoff;
 		ctx->sh_num = header64->e_shnum;
 	}
@@ -40,11 +42,12 @@ static void	get_section_header(t_context *ctx)
 
 static void	get_symbol_sections(t_context *ctx)
 {
-	const Elf32_Shdr	*section32 = ctx->file + ctx->sh_offset;
-	const Elf64_Shdr	*section64 = ctx->file + ctx->sh_offset;
+	Elf32_Shdr	*section32;
+	Elf64_Shdr	*section64;
 
 	if (ctx->filetype == ELFCLASS32)
 	{
+		section32 = ctx->file + ctx->sh_offset;
 		for (size_t i = 0;i < ctx->sh_num;i++)
 		{
 			if (section32->sh_type == SHT_SYMTAB)
@@ -56,6 +59,7 @@ static void	get_symbol_sections(t_context *ctx)
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
+		section64 = ctx->file + ctx->sh_offset;
 		for (size_t i = 0;i < ctx->sh_num;i++)
 		{
 			if (section64->sh_type == SHT_SYMTAB)
