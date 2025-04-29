@@ -6,45 +6,51 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:45 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/28 19:44:13 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/29 20:30:22 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static char	get_file_type(char *file);
+static void	open_file(t_context *ctx ,char *file);
+static void	get_file_type(t_context *ctx);
 
 void	ft_nm(char *file)
 {
 	t_context	ctx;
 
-	ctx.filetype = get_file_type(file);
+	open_file(&ctx, file);
+	get_file_type(&ctx);
 	switch (ctx.filetype)
 	{
 		case	ELFCLASS32:
 		case	ELFCLASS64:
-			process(&ctx, file);
+			process(&ctx);
 			break;
 		default:
-			return ((void)ft_printf("nm: %s: file format not recognized\n", file));
+			ft_printf("nm: %s: file format not recognized\n", file);
+			break;
 	}
+	munmap_helper(ctx.file, ctx.filesize);
 }
 
-static char	get_file_type(char *file)
+static void	open_file(t_context *ctx ,char *file)
 {
 	const int	fd = open_helper(file);
-	char		class;
-	Elf64_Ehdr	header;
+	struct stat	infos;
 
-
-	class = 0;
-	if (read(fd, &header, sizeof(header)) != sizeof(header))
-	{
-		close(fd);
-		exit(-1);
-	}
-	if (!ft_memcmp(header.e_ident, ELFMAG, SELFMAG))
-		class = header.e_ident[EI_CLASS];
+	fstat(fd, &infos);
+	ctx->file = mmap_helper(infos.st_size, fd);
+	ctx->filesize = infos.st_size;
 	close(fd);
-	return(class);
+}
+
+static void	get_file_type(t_context *ctx)
+{
+	Elf32_Ehdr	*header;
+
+	ctx->filetype = ELFCLASSNONE;
+	header = ctx->file;
+	if (!ft_memcmp(header->e_ident, ELFMAG, SELFMAG))
+		ctx->filetype = header->e_ident[EI_CLASS];
 }
