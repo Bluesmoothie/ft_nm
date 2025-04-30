@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/29 20:47:33 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/30 15:58:11 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,25 @@
 
 #define PSTR	"ft_nm"
 
+typedef struct s_elf32
+{
+	Elf32_Ehdr	*file_header;
+	Elf32_Shdr	*section_header;
+}	t_elf32;
+
+typedef struct s_elf64
+{
+	Elf64_Ehdr	*file_header;
+	Elf64_Shdr	*section_header;
+}	t_elf64;
+
 typedef struct s_context
 {
 	void	*file;
 	off_t	filesize;
 	char	filetype;
-	size_t	sh_offset;
-	size_t	sh_num;
+	t_elf32	elf32;
+	t_elf64	elf64;
 }	t_context;
 
 //	main.c
