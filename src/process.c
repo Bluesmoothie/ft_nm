@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/30 16:29:26 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/30 16:41:40 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	get_file_headers(t_context *ctx);
 static void	process_symbol_sections(t_context *ctx);
 static void	list_symbols(t_context *ctx, size_t index);
 static void	print_symbol(t_context *ctx, size_t link, void *sym);
+static char	get_symbol_type(t_context *ctx, void *sym);
 
 void	process(t_context *ctx)
 {
@@ -83,17 +84,42 @@ static void	print_symbol(t_context *ctx, size_t link, void *sym)
 	Elf32_Sym	*sym32;
 	Elf64_Sym	*sym64;
 	char		*strtab;
+	const char	type = get_symbol_type(ctx, sym);
 
+	if (type == 'E')
+		return ;
 	if (ctx->filetype == ELFCLASS32)
 	{
 		sym32 = sym;
 		strtab = ctx->file + ctx->elf32.section_header[link].sh_offset;
-		printf("Name = %s\n", &strtab[sym32->st_name]);
+		printf("%c %s\n", type, &strtab[sym32->st_name]);
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		sym64 = sym;
 		strtab = ctx->file + ctx->elf64.section_header[link].sh_offset;
-		printf("Name = %s\n", &strtab[sym64->st_name]);
+		printf("%c %s\n", type, &strtab[sym64->st_name]);
 	}
+}
+
+static char	get_symbol_type(t_context *ctx, void *sym)
+{
+	Elf32_Sym	*sym32;
+	Elf64_Sym	*sym64;
+	char		type;
+
+	type = 'E';
+	if (ctx->filetype == ELFCLASS32)
+	{
+		sym32 = sym;
+		if (sym32->st_shndx == SHN_UNDEF)
+			type = 'U';
+	}
+	else if (ctx->filetype == ELFCLASS64)
+	{
+		sym64 = sym;
+		if (sym64->st_shndx == SHN_UNDEF)
+			type = 'U';
+	}
+	return (type);
 }
