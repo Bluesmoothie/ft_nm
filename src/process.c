@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/30 17:10:01 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/30 17:35:24 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,9 @@ static char	get_symbol_type(t_context *ctx, void *sym)
 			type = 't';
 		else if (ELF32_ST_TYPE(sym32->st_info) == STT_OBJECT)
 		{
-			if (ctx->elf32.section_header[sym32->st_shndx].sh_type == SHT_NOBITS)
+			if (!(ctx->elf32.section_header[sym32->st_shndx].sh_flags & SHF_WRITE))
+				type = 'r';
+			else if (ctx->elf32.section_header[sym32->st_shndx].sh_type == SHT_NOBITS)
 				type = 'b';
 			else
 				type = 'd';
@@ -147,7 +149,9 @@ static char	get_symbol_type(t_context *ctx, void *sym)
 			type = 't';
 		else if (ELF64_ST_TYPE(sym64->st_info) == STT_OBJECT)
 		{
-			if (ctx->elf64.section_header[sym64->st_shndx].sh_type == SHT_NOBITS)
+			if (!(ctx->elf64.section_header[sym64->st_shndx].sh_flags & SHF_WRITE))
+				type = 'r';
+			else if (ctx->elf64.section_header[sym64->st_shndx].sh_type == SHT_NOBITS)
 				type = 'b';
 			else
 				type = 'd';
