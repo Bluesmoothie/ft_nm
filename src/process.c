@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/30 16:41:40 by ygille           ###   ########.fr       */
+/*   Updated: 2025/04/30 17:10:01 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,21 @@ static void	print_symbol(t_context *ctx, size_t link, void *sym)
 	{
 		sym32 = sym;
 		strtab = ctx->file + ctx->elf32.section_header[link].sh_offset;
-		printf("%c %s\n", type, &strtab[sym32->st_name]);
+		if (type == 'U' || type == 'w')
+			ft_printf("                 ");
+		else
+			ft_printf("000000000000%x ", sym32->st_value);
+		ft_printf("%c %s\n", type, &strtab[sym32->st_name]);
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		sym64 = sym;
 		strtab = ctx->file + ctx->elf64.section_header[link].sh_offset;
-		printf("%c %s\n", type, &strtab[sym64->st_name]);
+		if (type == 'U' || type == 'w')
+			ft_printf("                 ");
+		else
+			ft_printf("000000000000%x ", sym64->st_value);
+		ft_printf("%c %s\n", type, &strtab[sym64->st_name]);
 	}
 }
 
@@ -112,14 +120,40 @@ static char	get_symbol_type(t_context *ctx, void *sym)
 	if (ctx->filetype == ELFCLASS32)
 	{
 		sym32 = sym;
-		if (sym32->st_shndx == SHN_UNDEF)
+		if (ELF32_ST_BIND(sym32->st_info) == STB_WEAK)
+			type = 'w';
+		else if (sym32->st_shndx == SHN_UNDEF)
 			type = 'U';
+		else if (ELF32_ST_TYPE(sym32->st_info) == STT_FUNC)
+			type = 't';
+		else if (ELF32_ST_TYPE(sym32->st_info) == STT_OBJECT)
+		{
+			if (ctx->elf32.section_header[sym32->st_shndx].sh_type == SHT_NOBITS)
+				type = 'b';
+			else
+				type = 'd';
+		}
+		if (ELF32_ST_BIND(sym32->st_info) == STB_GLOBAL)
+			type = ft_toupper(type);
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		sym64 = sym;
-		if (sym64->st_shndx == SHN_UNDEF)
+		if (ELF64_ST_BIND(sym64->st_info) == STB_WEAK)
+			type = 'w';
+		else if (sym64->st_shndx == SHN_UNDEF)
 			type = 'U';
+		else if (ELF64_ST_TYPE(sym64->st_info) == STT_FUNC)
+			type = 't';
+		else if (ELF64_ST_TYPE(sym64->st_info) == STT_OBJECT)
+		{
+			if (ctx->elf64.section_header[sym64->st_shndx].sh_type == SHT_NOBITS)
+				type = 'b';
+			else
+				type = 'd';
+		}
+		if (ELF64_ST_BIND(sym64->st_info) == STB_GLOBAL)
+			type = ft_toupper(type);
 	}
 	return (type);
 }
