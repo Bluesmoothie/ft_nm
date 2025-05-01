@@ -6,14 +6,15 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:45 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/29 20:30:22 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 14:08:26 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nm.h"
+#include "ft_nm.h"
 
 static void	open_file(t_context *ctx ,char *file);
 static void	get_file_type(t_context *ctx);
+static void	get_file_headers(t_context *ctx);
 
 void	ft_nm(char *file)
 {
@@ -25,7 +26,8 @@ void	ft_nm(char *file)
 	{
 		case	ELFCLASS32:
 		case	ELFCLASS64:
-			process(&ctx);
+			get_file_headers(&ctx);
+			process_symbol_sections(&ctx);
 			break;
 		default:
 			ft_printf("nm: %s: file format not recognized\n", file);
@@ -53,4 +55,18 @@ static void	get_file_type(t_context *ctx)
 	header = ctx->file;
 	if (!ft_memcmp(header->e_ident, ELFMAG, SELFMAG))
 		ctx->filetype = header->e_ident[EI_CLASS];
+}
+
+static void	get_file_headers(t_context *ctx)
+{
+	if (ctx->filetype == ELFCLASS32)
+	{
+		ctx->elf32.file_header = ctx->file;
+		ctx->elf32.section_header = ctx->file + ctx->elf32.file_header->e_shoff;
+	}
+	else if (ctx->filetype == ELFCLASS64)
+	{
+		ctx->elf64.file_header = ctx->file;
+		ctx->elf64.section_header = ctx->file + ctx->elf64.file_header->e_shoff;
+	}
 }

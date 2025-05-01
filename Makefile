@@ -18,10 +18,13 @@ INCLUDE 		=	-Iinclude/ -I$(LIBFT)/include/
 
 #			SRC
 
-SRC_FILES		=	main				\
-					ft_nm				\
-					process				\
-					utils				\
+SRC_FILES		=	main						\
+					ft_nm						\
+					utils						\
+					symbols\symbol_name			\
+					symbols\symbol_type			\
+					symbols\symbol_value		\
+					symbols\symbol				\
 
 SRC 			= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 			= 	$(addprefix $(BUILD_DIR), $(addsuffix .o, $(SRC_FILES)))
@@ -41,6 +44,7 @@ $(NAME)			:	$(BUILD_DIR) $(OBJ) $(LIBFT_A)
 
 $(BUILD_DIR)	:
 				mkdir -p $(BUILD_DIR)
+				mkdir -p $(BUILD_DIR)symbols
 
 $(BUILD_DIR)%.o	: 	$(SRC_DIR)%.c
 				$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

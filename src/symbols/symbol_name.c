@@ -1,38 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   symbol_name.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 14:07:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 14:08:39 by ygille           ###   ########.fr       */
+/*   Created: 2025/05/01 14:16:12 by ygille            #+#    #+#             */
+/*   Updated: 2025/05/01 14:27:47 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-int	open_helper(char *file)
+char	*get_symbol_name(t_context *ctx, void *sym, t_symbol *symbol)
 {
-	const int	fd = open(file, O_RDONLY);
 
-	if (fd < 1)
-		pexit(PSTR);
-	return (fd);
-}
-
-void	*mmap_helper(size_t len, int fd)
-{
-	void	*ptr;
-
-	ptr = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fd , 0);
-	if (ptr == MAP_FAILED)
-		pexit(PSTR);
-	return (ptr);
-}
-
-void	munmap_helper(void *addr, size_t len)
-{
-	if(munmap(addr, len) == -1)
-		pexit(PSTR);
 }

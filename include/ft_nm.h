@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm.h                                               :+:      :+:    :+:   */
+/*   ft_nm.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/04/30 15:58:11 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 14:29:05 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,34 @@ typedef struct s_context
 	t_elf64	elf64;
 }	t_context;
 
+typedef struct s_symbol
+{
+	size_t	value;
+	char	type;
+	char	*name;
+}	t_symbol;
+
 //	main.c
 int		pexit(char *msg);
 
 //	ft_nm.c
 void	ft_nm(char *file);
 
-//	process.c
-void	process(t_context *ctx);
-
 //	utils.c
 int		open_helper(char *file);
 void	*mmap_helper(size_t len, int fd);
 void	munmap_helper(void *addr, size_t len);
+
+//	->symbols
+
+//	symbol_name.c
+char	*get_symbol_name(t_context *ctx, void *sym, t_symbol *symbol);
+
+//	symbol_type.c
+char	get_symbol_type(t_context *ctx, void *sym);
+
+//	symbol_value.c
+size_t	get_symbol_value(t_context *ctx, void *sym, t_symbol *symbol);
+
+//	symbol.c
+void	process_symbol_sections(t_context *ctx);
