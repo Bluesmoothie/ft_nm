@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 14:29:05 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 14:43:43 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,15 @@ void	*mmap_helper(size_t len, int fd);
 void	munmap_helper(void *addr, size_t len);
 
 //	->symbols
+
+//	bind_global.c
+char	global_symbol(t_context *ctx, void *sym);
+
+//	bind_local.c
+char	local_symbol(t_context *ctx, void *sym);
+
+//	bind_weak.c
+char	weak_symbol(t_context *ctx, void *sym);
 
 //	symbol_name.c
 char	*get_symbol_name(t_context *ctx, void *sym, t_symbol *symbol);

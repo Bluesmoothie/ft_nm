@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   symbol_value.c                                     :+:      :+:    :+:   */
+/*   bind_weak.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 14:22:53 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:23:00 by ygille           ###   ########.fr       */
+/*   Created: 2025/05/01 14:44:53 by ygille            #+#    #+#             */
+/*   Updated: 2025/05/01 15:21:47 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-size_t	get_symbol_value(t_context *ctx, void *sym, t_symbol *symbol)
+char	weak_symbol(t_context *ctx, void *sym)
 {
-	(void)ctx;
-	(void)sym;
-	(void)symbol;
-	return (0);
+	const char	base_type = global_symbol(ctx, sym);
+
+	switch (base_type)
+	{
+	case	'C':
+		return ('C');
+		break;
+	case	'U':
+		return ('w');
+		break;
+	default:
+		return ('W');
+		break;
+	}
 }

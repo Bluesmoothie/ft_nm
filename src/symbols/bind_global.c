@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   symbol_value.c                                     :+:      :+:    :+:   */
+/*   bind_global.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 14:22:53 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:23:00 by ygille           ###   ########.fr       */
+/*   Created: 2025/05/01 14:44:20 by ygille            #+#    #+#             */
+/*   Updated: 2025/05/01 15:18:56 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-size_t	get_symbol_value(t_context *ctx, void *sym, t_symbol *symbol)
+char	global_symbol(t_context *ctx, void *sym)
 {
-	(void)ctx;
-	(void)sym;
-	(void)symbol;
-	return (0);
+	return (ft_toupper(local_symbol(ctx, sym)));
 }
