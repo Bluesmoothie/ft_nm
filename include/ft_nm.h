@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:52:45 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:09:44 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-#define LOW_BASE_HEX	"abcdef123456789"
+#define LOW_BASE_HEX	"0123456789abcdef"
 #define PSTR			"ft_nm"
 
 typedef struct s_elf32

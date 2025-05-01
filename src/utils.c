@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:59:27 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:08:37 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	get_str_value(t_symbol *symbol)
 	ft_memset(&symbol->strvalue, '0', 16);
 	val = symbol->value;
 	i = 15;
-	while (val / 16)
+	while (val)
 	{
 		symbol->strvalue[i] = LOW_BASE_HEX[val % 16];
 		val /= 16;
