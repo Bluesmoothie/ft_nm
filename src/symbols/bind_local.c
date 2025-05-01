@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 16:04:12 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:31:49 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,17 +108,15 @@ static char	_notype_default_(t_context *ctx,void *sym)
 	{
 		sym32 = sym;
 		Elf32_Shdr	*section = ctx->elf32.section_header + sym32->st_shndx;
-		Elf32_Shdr	*section_strtab = ctx->elf32.section_header + section->sh_link;
-		char		*strtab = ctx->file + section_strtab->sh_offset;
-		section_name = &strtab[section->sh_name];
+
+		section_name = &ctx->strtab[section->sh_name];
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		sym64 = sym;
 		Elf64_Shdr	*section = ctx->elf64.section_header + sym64->st_shndx;
-		Elf64_Shdr	*section_strtab = ctx->elf64.section_header + section->sh_link;
-		char		*strtab = ctx->file + section_strtab->sh_offset;
-		section_name = &strtab[section->sh_name];
+
+		section_name = &ctx->strtab[section->sh_name];
 	}
 	if (!ft_strcmp(section_name, ".text"))
 		return ('t');

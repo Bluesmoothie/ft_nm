@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:45 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 14:08:26 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:23:43 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,20 @@ static void	get_file_headers(t_context *ctx)
 {
 	if (ctx->filetype == ELFCLASS32)
 	{
+		Elf32_Shdr	*strtab_section;
+
 		ctx->elf32.file_header = ctx->file;
 		ctx->elf32.section_header = ctx->file + ctx->elf32.file_header->e_shoff;
+		strtab_section = ctx->elf32.section_header + ctx->elf32.file_header->e_shstrndx;
+		ctx->strtab = ctx->file + strtab_section->sh_offset;
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
+		Elf64_Shdr	*strtab_section;
+
 		ctx->elf64.file_header = ctx->file;
 		ctx->elf64.section_header = ctx->file + ctx->elf64.file_header->e_shoff;
+		strtab_section = ctx->elf64.section_header + ctx->elf64.file_header->e_shstrndx;
+		ctx->strtab = ctx->file + strtab_section->sh_offset;
 	}
 }
