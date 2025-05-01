@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:25:46 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 16:04:12 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static char	_notype_(t_context *ctx,void *sym);
 static char	_notype_default_(t_context *ctx,void *sym);
 static char	_object_(t_context *ctx,void *sym);
+static char	_func_(t_context *ctx,void *sym);
 
 char	local_symbol(t_context *ctx, void *sym)
 {
@@ -45,7 +46,7 @@ char	local_symbol(t_context *ctx, void *sym)
 			type = _object_(ctx, sym);
 			break;
 		case	STT_FUNC:
-			type = 't';
+			type = _func_(ctx, sym);
 			break;
 		case	STT_SECTION:
 			type = 'n';
@@ -157,6 +158,38 @@ static char	_object_(t_context *ctx,void *sym)
 			break;
 		default:
 			type = _notype_default_(ctx, sym);
+			break;
+	}
+	return (type);
+}
+
+static char	_func_(t_context *ctx,void *sym)
+{
+	Elf32_Sym		*sym32;
+	Elf64_Sym		*sym64;
+	size_t			st_shndx;
+	char			type;
+
+	type = '?';
+	if (ctx->filetype == ELFCLASS32)
+	{
+		sym32 = sym;
+		st_shndx = sym32->st_shndx;
+	}
+	else if (ctx->filetype == ELFCLASS64)
+	{
+		sym64 = sym;
+		st_shndx = sym64->st_shndx;
+	}
+	else
+		return (type);
+	switch (st_shndx)
+	{
+		case	SHN_UNDEF:
+			type = 'u';
+			break;
+		default:
+			type = 't';
 			break;
 	}
 	return (type);

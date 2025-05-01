@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:56:05 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 15:59:27 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	get_str_value(t_symbol *symbol)
 	int		i;
 	
 	symbol->strvalue[16] = '\0';
-	if (symbol->type == 'U')
+	if (symbol->type == 'w' || symbol->type == 'W' || symbol->type == 'u' || symbol->type == 'U')
 	{
 		ft_memset(&symbol->strvalue, ' ', 16);
 		return ;
