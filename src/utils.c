@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 14:08:39 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 15:56:05 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,26 @@ void	munmap_helper(void *addr, size_t len)
 {
 	if(munmap(addr, len) == -1)
 		pexit(PSTR);
+}
+
+void	get_str_value(t_symbol *symbol)
+{
+	size_t	val;
+	int		i;
+	
+	symbol->strvalue[16] = '\0';
+	if (symbol->type == 'U')
+	{
+		ft_memset(&symbol->strvalue, ' ', 16);
+		return ;
+	}
+	ft_memset(&symbol->strvalue, '0', 16);
+	val = symbol->value;
+	i = 15;
+	while (val / 16)
+	{
+		symbol->strvalue[i] = LOW_BASE_HEX[val % 16];
+		val /= 16;
+		i--;
+	}
 }

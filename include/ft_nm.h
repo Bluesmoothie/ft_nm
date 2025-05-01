@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 14:43:43 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 15:52:45 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-#define PSTR	"ft_nm"
+#define LOW_BASE_HEX	"abcdef123456789"
+#define PSTR			"ft_nm"
 
 typedef struct s_elf32
 {
@@ -53,6 +54,7 @@ typedef struct s_symbol
 	size_t	value;
 	char	type;
 	char	*name;
+	char	strvalue[17];
 }	t_symbol;
 
 //	main.c
@@ -65,6 +67,7 @@ void	ft_nm(char *file);
 int		open_helper(char *file);
 void	*mmap_helper(size_t len, int fd);
 void	munmap_helper(void *addr, size_t len);
+void	get_str_value(t_symbol *symbol);
 
 //	->symbols
 
@@ -78,7 +81,7 @@ char	local_symbol(t_context *ctx, void *sym);
 char	weak_symbol(t_context *ctx, void *sym);
 
 //	symbol_name.c
-char	*get_symbol_name(t_context *ctx, void *sym, t_symbol *symbol);
+char	*get_symbol_name(t_context *ctx, void *sym, t_symbol *symbol, size_t link);
 
 //	symbol_type.c
 char	get_symbol_type(t_context *ctx, void *sym);

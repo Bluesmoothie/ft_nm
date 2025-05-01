@@ -6,15 +6,15 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:27:24 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/01 15:48:50 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
 static void		list_symbols(t_context *ctx, size_t index);
-static void		print_symbol(t_context *ctx, void *sym);
-static t_symbol	get_symbol_infos(t_context *ctx, void *sym);
+static void		print_symbol(t_context *ctx, void *sym, size_t link);
+static t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link);
 
 void	process_symbol_sections(t_context *ctx)
 {
@@ -42,7 +42,7 @@ static void	list_symbols(t_context *ctx, size_t index)
 		sym32 = ctx->file + ctx->elf32.section_header[index].sh_offset;
 		for (size_t i = 0;i < ctx->elf32.section_header[index].sh_size;sym32++)
 		{
-			print_symbol(ctx, sym32);
+			print_symbol(ctx, sym32, ctx->elf32.section_header[index].sh_link);
 			i += sizeof(Elf32_Sym);
 		}
 	}
@@ -51,34 +51,28 @@ static void	list_symbols(t_context *ctx, size_t index)
 		sym64 = ctx->file + ctx->elf64.section_header[index].sh_offset;
 		for (size_t i = 0;i < ctx->elf64.section_header[index].sh_size;sym64++)
 		{
-			print_symbol(ctx, sym64);
+			print_symbol(ctx, sym64, ctx->elf64.section_header[index].sh_link);
 			i += sizeof(Elf64_Sym);
 		}
 	}
 }
 
-static void	print_symbol(t_context *ctx, void *sym)
+static void	print_symbol(t_context *ctx, void *sym, size_t link)
 {
-	const t_symbol	symbol = get_symbol_infos(ctx, sym);
+	const t_symbol	symbol = get_symbol_infos(ctx, sym, link);
 
 	if (symbol.type == '?')
 		return ;
-	if (ctx->filetype == ELFCLASS32)
-	{
-		
-	}
-	else if (ctx->filetype == ELFCLASS64)
-	{
-		
-	}
+	printf("%s %c %s\n", symbol.strvalue, symbol.type, symbol.name);
 }
 
-static t_symbol	get_symbol_infos(t_context *ctx, void *sym)
+static t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link)
 {
 	t_symbol	symbol;
 
 	symbol.type = get_symbol_type(ctx, sym);
-	symbol.name = get_symbol_name(ctx, sym, &symbol);
+	symbol.name = get_symbol_name(ctx, sym, &symbol, link);
 	symbol.value = get_symbol_value(ctx, sym, &symbol);
+	get_str_value(&symbol);
 	return (symbol);
 }
