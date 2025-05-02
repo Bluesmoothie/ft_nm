@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:06:54 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:26:24 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:29:04 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ static char	*get_symbol_name(t_context *ctx, void *sym, size_t link)
 	{
 		Elf32_Sym	*symX = sym;
 		Elf32_Shdr	*section_strtab = ctx->elfX.elf32.section_header + link;
-
 		char		*strtab = ctx->file + section_strtab->sh_offset;
+
 		return (&strtab[symX->st_name]);
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		Elf64_Sym	*symX = sym;
 		Elf64_Shdr	*section_strtab = ctx->elfX.elf64.section_header + link;
-
 		char		*strtab = ctx->file + section_strtab->sh_offset;
+
 		return (&strtab[symX->st_name]);
 	}
 	return (NULL);
