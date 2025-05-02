@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:18:30 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:22:39 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,8 @@ void	get_str_value(t_symbol *symbol);
 
 //	->symbols
 
-//	bind.c
-char		global_symbol(t_context *ctx, void *sym, t_symbol *symbol);
-char		weak_symbol(t_context *ctx, void *sym, t_symbol *symbol);
-char		local_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+//	symbol_id.c
+char		get_symbol_id(t_context *ctx, void *sym, t_symbol *symbol);;
 
 //	symbol_infos.c
 t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link);

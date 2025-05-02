@@ -21,7 +21,7 @@ INCLUDE 		=	-Iinclude/ -I$(LIBFT)/include/
 SRC_FILES		=	main						\
 					ft_nm						\
 					utils						\
-					symbols/bind				\
+					symbols/symbol_id			\
 					symbols/symbol_infos		\
 					symbols/symbol				\
 

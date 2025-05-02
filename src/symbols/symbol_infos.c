@@ -6,14 +6,13 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:06:54 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:19:36 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:22:46 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
 static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym);
-static char		get_symbol_type(t_context *ctx, void *sym, t_symbol *symbol);
 static char		*get_symbol_name(t_context *ctx, void *sym, size_t link);
 
 t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link)
@@ -21,7 +20,7 @@ t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link)
 	t_symbol	symbol;
 
 	symbol = get_symbol_base_infos(ctx, sym);
-	symbol.id = get_symbol_type(ctx, sym, &symbol);
+	symbol.id = get_symbol_id(ctx, sym, &symbol);
 	symbol.name = get_symbol_name(ctx, sym, link);
 	get_str_value(&symbol);
 	return (symbol);
@@ -53,25 +52,6 @@ static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym)
 		symbol.shndx = symX->st_shndx;
 	}
 	return (symbol);
-}
-
-static char	get_symbol_type(t_context *ctx, void *sym, t_symbol *symbol)
-{
-	switch (symbol->bind)
-	{
-		case	STB_LOCAL:
-			return (local_symbol(ctx, sym, symbol));
-			break;
-		case	STB_GLOBAL:
-			return (global_symbol(ctx, sym, symbol));
-			break;
-		case	STB_WEAK:
-			return (weak_symbol(ctx, sym, symbol));
-			break;
-		default:
-			return (ERR_SYM_ID);
-			break;
-	}
 }
 
 static char	*get_symbol_name(t_context *ctx, void *sym, size_t link)

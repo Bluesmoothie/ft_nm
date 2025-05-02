@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bind_local.c                                       :+:      :+:    :+:   */
+/*   symbol_id.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:16:20 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:22:29 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,28 @@
 
 static char	_notype_(t_context *ctx,void *sym, t_symbol *symbol);
 static char	_notype_default_(t_context *ctx,void *sym);
+static char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+static char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+static char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+
+char	get_symbol_id(t_context *ctx, void *sym, t_symbol *symbol)
+{
+	switch (symbol->bind)
+	{
+		case	STB_LOCAL:
+			return (local_symbol(ctx, sym, symbol));
+			break;
+		case	STB_GLOBAL:
+			return (global_symbol(ctx, sym, symbol));
+			break;
+		case	STB_WEAK:
+			return (weak_symbol(ctx, sym, symbol));
+			break;
+		default:
+			return (ERR_SYM_ID);
+			break;
+	}
+}
 
 char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol)
 {
