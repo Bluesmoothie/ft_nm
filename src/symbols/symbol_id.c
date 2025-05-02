@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:46:47 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:47:43 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ static char	symbol_id(t_context *ctx, void *sym, t_symbol *symbol)
 				return ('t');
 			break;
 		case	STT_SECTION:
-			return ('n');
-			break;
 		case	STT_FILE:
 			return ('n');
 			break;
