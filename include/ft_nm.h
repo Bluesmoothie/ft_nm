@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 18:41:21 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:46:58 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@
 #define	ERR_SYM_ID				'?'
 
 #define NULL_SYMBOL(symbol)		(!symbol.bind && !symbol.type && !symbol.shndx)
+
+#define SECTION_T(name)			(!ft_strcmp(name, ".text") || !ft_strcmp(name, ".plt"))
+#define SECTION_D(name)			(!ft_strcmp(name, ".data") || !ft_strcmp(name, ".init_array") || !ft_strcmp(name, ".fini_array")\
+								|| !ft_strcmp(name, ".data.rel.ro") || !ft_strcmp(name, ".got") || !ft_strcmp(name, ".got.plt")\
+								|| !ft_strcmp(name, ".dynamic") || !ft_strcmp(name, ".ctors") || !ft_strcmp(name, ".dtors")\
+								|| !ft_strcmp(name, ".jcr"))
+#define SECTION_B(name)			(!ft_strcmp(name, ".bss"))
+#define	SECTION_R(name)			(!ft_strcmp(name, ".rodata") || !ft_strcmp(name, ".rodata1") || !ft_strcmp(name, ".eh_frame")\
+								|| !ft_strcmp(name, ".eh_frame_hdr") || !ft_strcmp(name, ".note.ABI-tag"))
 
 typedef struct s_elf32
 {

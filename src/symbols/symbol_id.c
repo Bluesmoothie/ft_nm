@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:47:43 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:46:17 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,13 @@ static char	_notype_default_(t_context *ctx,void *sym)
 
 		section_name = &ctx->strtab[section->sh_name];
 	}
-	if (!ft_strcmp(section_name, ".text") || !ft_strcmp(section_name, ".plt"))
+	if (SECTION_T(section_name))
 		return ('t');
-	else if (!ft_strcmp(section_name, ".data") || !ft_strcmp(section_name, ".init_array") || !ft_strcmp(section_name, ".fini_array")
-			|| !ft_strcmp(section_name, ".data.rel.ro") || !ft_strcmp(section_name, ".got") || !ft_strcmp(section_name, ".got.plt")
-			|| !ft_strcmp(section_name, ".dynamic") || !ft_strcmp(section_name, ".ctors") || !ft_strcmp(section_name, ".dtors")
-			|| !ft_strcmp(section_name, ".jcr"))
+	else if (SECTION_D(section_name))
 		return ('d');
-	else if (!ft_strcmp(section_name, ".bss"))
+	else if (SECTION_B(section_name))
 		return ('b');
-	else if (!ft_strcmp(section_name, ".rodata") || !ft_strcmp(section_name, ".rodata1") || !ft_strcmp(section_name, ".eh_frame")
-		|| !ft_strcmp(section_name, ".eh_frame_hdr") || !ft_strcmp(section_name, ".note.ABI-tag"))
+	else if (SECTION_R(section_name))
 		return ('r');
 	return ('?');
 }
