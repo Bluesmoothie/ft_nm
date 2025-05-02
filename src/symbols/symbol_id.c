@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:32:52 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:46:47 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 static char	_notype_(t_context *ctx,void *sym, t_symbol *symbol);
 static char	_notype_default_(t_context *ctx,void *sym);
-static char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol);
-static char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol);
-static char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+static char	weak_symbol(char base_id);
+static char	symbol_id(t_context *ctx, void *sym, t_symbol *symbol);
 
 /*
 **	Determine the symbol char id from its parameters
@@ -26,13 +25,13 @@ char	get_symbol_id(t_context *ctx, void *sym, t_symbol *symbol)
 	switch (symbol->bind)
 	{
 		case	STB_LOCAL:
-			return (local_symbol(ctx, sym, symbol));
+			return (symbol_id(ctx, sym, symbol));
 			break;
 		case	STB_GLOBAL:
-			return (global_symbol(ctx, sym, symbol));
+			return (ft_toupper(symbol_id(ctx, sym, symbol)));
 			break;
 		case	STB_WEAK:
-			return (weak_symbol(ctx, sym, symbol));
+			return (weak_symbol(symbol_id(ctx, sym, symbol)));
 			break;
 		default:
 			return (ERR_SYM_ID);
@@ -40,16 +39,9 @@ char	get_symbol_id(t_context *ctx, void *sym, t_symbol *symbol)
 	}
 }
 
-char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol)
+static char	weak_symbol(char base_id)
 {
-	return (ft_toupper(local_symbol(ctx, sym, symbol)));
-}
-
-char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol)
-{
-	const char	base_type = global_symbol(ctx, sym, symbol);
-
-	switch (base_type)
+	switch (base_id)
 	{
 	case	'C':
 		return ('C');
@@ -63,7 +55,7 @@ char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol)
 	}
 }
 
-char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol)
+static char	symbol_id(t_context *ctx, void *sym, t_symbol *symbol)
 {
 	switch (symbol->type)
 	{
