@@ -6,29 +6,56 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 15:30:32 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:16:20 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-static char	_notype_(t_context *ctx,void *sym);
+static char	_notype_(t_context *ctx,void *sym, t_symbol *symbol);
 static char	_notype_default_(t_context *ctx,void *sym);
-static char	_object_(t_context *ctx,void *sym);
-static char	_func_(t_context *ctx,void *sym);
+
+char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol)
+{
+	return (ft_toupper(local_symbol(ctx, sym, symbol)));
+}
+
+char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol)
+{
+	const char	base_type = global_symbol(ctx, sym, symbol);
+
+	switch (base_type)
+	{
+	case	'C':
+		return ('C');
+		break;
+	case	'U':
+		return ('w');
+		break;
+	default:
+		return ('W');
+		break;
+	}
+}
 
 char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol)
 {
 	switch (symbol->type)
 	{
 		case	STT_NOTYPE:	
-			return (_notype_(ctx, sym));
+			return (_notype_(ctx, sym, symbol));
 			break;
 		case	STT_OBJECT:
-			return (_object_(ctx, sym));
+			if (symbol->shndx == SHN_ABS)
+				return ('a');
+			else
+				return (_notype_default_(ctx, sym));
 			break;
 		case	STT_FUNC:
-			return (_func_(ctx, sym));
+			if (symbol->shndx == SHN_UNDEF)
+				return ('u');
+			else
+				return ('t');
 			break;
 		case	STT_SECTION:
 			return ('n');
@@ -42,42 +69,23 @@ char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol)
 	}
 }
 
-static char	_notype_(t_context *ctx,void *sym)
+static char	_notype_(t_context *ctx,void *sym, t_symbol *symbol)
 {
-	Elf32_Sym		*sym32;
-	Elf64_Sym		*sym64;
-	size_t			st_shndx;
-	char			type;
-
-	type = '?';
-	if (ctx->filetype == ELFCLASS32)
-	{
-		sym32 = sym;
-		st_shndx = sym32->st_shndx;
-	}
-	else if (ctx->filetype == ELFCLASS64)
-	{
-		sym64 = sym;
-		st_shndx = sym64->st_shndx;
-	}
-	else
-		return (type);
-	switch (st_shndx)
+	switch (symbol->shndx)
 	{
 		case	SHN_UNDEF:
-			type = 'u';
+			return ('u');
 			break;
 		case	SHN_ABS:
-			type = 'a';
+			return ('a');
 			break;
 		case	SHN_COMMON:
-			type = 'c';
+			return ('c');
 			break;
 		default:
-			type = _notype_default_(ctx, sym);
+			return (_notype_default_(ctx, sym));
 			break;
 	}
-	return (type);
 }
 
 static char	_notype_default_(t_context *ctx,void *sym)
@@ -113,68 +121,4 @@ static char	_notype_default_(t_context *ctx,void *sym)
 		|| !ft_strcmp(section_name, ".eh_frame_hdr") || !ft_strcmp(section_name, ".note.ABI-tag"))
 		return ('r');
 	return ('?');
-}
-
-static char	_object_(t_context *ctx,void *sym)
-{
-	Elf32_Sym		*sym32;
-	Elf64_Sym		*sym64;
-	size_t			st_shndx;
-	char			type;
-
-	type = '?';
-	if (ctx->filetype == ELFCLASS32)
-	{
-		sym32 = sym;
-		st_shndx = sym32->st_shndx;
-	}
-	else if (ctx->filetype == ELFCLASS64)
-	{
-		sym64 = sym;
-		st_shndx = sym64->st_shndx;
-	}
-	else
-		return (type);
-	switch (st_shndx)
-	{
-		case	SHN_ABS:
-			type = 'a';
-			break;
-		default:
-			type = _notype_default_(ctx, sym);
-			break;
-	}
-	return (type);
-}
-
-static char	_func_(t_context *ctx,void *sym)
-{
-	Elf32_Sym		*sym32;
-	Elf64_Sym		*sym64;
-	size_t			st_shndx;
-	char			type;
-
-	type = '?';
-	if (ctx->filetype == ELFCLASS32)
-	{
-		sym32 = sym;
-		st_shndx = sym32->st_shndx;
-	}
-	else if (ctx->filetype == ELFCLASS64)
-	{
-		sym64 = sym;
-		st_shndx = sym64->st_shndx;
-	}
-	else
-		return (type);
-	switch (st_shndx)
-	{
-		case	SHN_UNDEF:
-			type = 'u';
-			break;
-		default:
-			type = 't';
-			break;
-	}
-	return (type);
 }

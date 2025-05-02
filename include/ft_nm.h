@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 15:31:34 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:18:30 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,13 @@ void	get_str_value(t_symbol *symbol);
 
 //	->symbols
 
-//	bind_global.c
-char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+//	bind.c
+char		global_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+char		weak_symbol(t_context *ctx, void *sym, t_symbol *symbol);
+char		local_symbol(t_context *ctx, void *sym, t_symbol *symbol);
 
-//	bind_local.c
-char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol);
-
-//	bind_weak.c
-char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol);
-
-//	symbol_name.c
-char	*get_symbol_name(t_context *ctx, void *sym, t_symbol *symbol, size_t link);
-
-//	symbol_type.c
-char	get_symbol_type(t_context *ctx, void *sym, t_symbol *symbol);
-
-//	symbol_value.c
-size_t	get_symbol_value(t_context *ctx, void *sym, t_symbol *symbol);
+//	symbol_infos.c
+t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link);
 
 //	symbol.c
-void	process_symbol_sections(t_context *ctx);
+void		process_symbol_sections(t_context *ctx);

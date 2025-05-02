@@ -21,12 +21,8 @@ INCLUDE 		=	-Iinclude/ -I$(LIBFT)/include/
 SRC_FILES		=	main						\
 					ft_nm						\
 					utils						\
-					symbols/bind_global			\
-					symbols/bind_local			\
-					symbols/bind_weak			\
-					symbols/symbol_name			\
-					symbols/symbol_type			\
-					symbols/symbol_value		\
+					symbols/bind				\
+					symbols/symbol_infos		\
 					symbols/symbol				\
 
 SRC 			= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
