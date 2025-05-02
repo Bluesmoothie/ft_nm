@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 15:05:07 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 15:30:32 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,49 +17,29 @@ static char	_notype_default_(t_context *ctx,void *sym);
 static char	_object_(t_context *ctx,void *sym);
 static char	_func_(t_context *ctx,void *sym);
 
-char	local_symbol(t_context *ctx, void *sym)
+char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol)
 {
-	unsigned char	info_type;
-	char			type;
-
-	type = '?';
-	if (ctx->filetype == ELFCLASS32)
-	{
-		Elf32_Sym		*sym32;
-
-		sym32 = sym;
-		info_type = ELF32_ST_TYPE(sym32->st_info);
-	}
-	else if (ctx->filetype == ELFCLASS64)
-	{
-		Elf64_Sym		*sym64;
-
-		sym64 = sym;
-		info_type = ELF64_ST_TYPE(sym64->st_info);
-	}
-	else
-		return (type);
-	switch (info_type)
+	switch (symbol->type)
 	{
 		case	STT_NOTYPE:	
-			type = _notype_(ctx, sym);
+			return (_notype_(ctx, sym));
 			break;
 		case	STT_OBJECT:
-			type = _object_(ctx, sym);
+			return (_object_(ctx, sym));
 			break;
 		case	STT_FUNC:
-			type = _func_(ctx, sym);
+			return (_func_(ctx, sym));
 			break;
 		case	STT_SECTION:
-			type = 'n';
+			return ('n');
 			break;
 		case	STT_FILE:
-			type = 'n';
+			return ('n');
 			break;
 		default:
+			return (ERR_SYM_ID);
 			break;
 	}
-	return (type);
 }
 
 static char	_notype_(t_context *ctx,void *sym)

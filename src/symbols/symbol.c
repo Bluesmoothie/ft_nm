@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 15:06:25 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 15:33:59 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	print_symbol(t_context *ctx, void *sym, size_t link)
 {
 	const t_symbol	symbol = get_symbol_infos(ctx, sym, link);
 
-	if (symbol.id == '?' || symbol.id == 'n' || symbol.id == 'N')
+	if (symbol.id == ERR_SYM_ID || symbol.id == 'n' || symbol.id == 'N')
 		return ;
 	printf("%s %c %s\n", symbol.strvalue, symbol.id, symbol.name);
 }
@@ -73,9 +73,8 @@ static t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link)
 	t_symbol	symbol;
 
 	symbol = get_symbol_base_infos(ctx, sym);
-	symbol.id = get_symbol_type(ctx, sym);
+	symbol.id = get_symbol_type(ctx, sym, &symbol);
 	symbol.name = get_symbol_name(ctx, sym, &symbol, link);
-	symbol.value = get_symbol_value(ctx, sym, &symbol);
 	get_str_value(&symbol);
 	return (symbol);
 }
@@ -92,6 +91,7 @@ static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym)
 		symX = sym;
 		symbol.bind = ELF32_ST_BIND(symX->st_info);
 		symbol.type = ELF32_ST_TYPE(symX->st_info);
+		symbol.value = symX->st_value;
 		symbol.shndx = symX->st_shndx;
 	}
 	else if (ctx->filetype == ELFCLASS64)
@@ -101,6 +101,7 @@ static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym)
 		symX = sym;
 		symbol.bind = ELF64_ST_BIND(symX->st_info);
 		symbol.type = ELF64_ST_TYPE(symX->st_info);
+		symbol.value = symX->st_value;
 		symbol.shndx = symX->st_shndx;
 	}
 	return (symbol);

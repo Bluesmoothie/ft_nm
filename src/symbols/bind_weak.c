@@ -6,15 +6,15 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:44:53 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 15:21:47 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 15:31:28 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-char	weak_symbol(t_context *ctx, void *sym)
+char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol)
 {
-	const char	base_type = global_symbol(ctx, sym);
+	const char	base_type = global_symbol(ctx, sym, symbol);
 
 	switch (base_type)
 	{
