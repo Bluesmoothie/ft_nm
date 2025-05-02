@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:31:51 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:11:36 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void	process_symbol_sections(t_context *ctx)
 	if (ctx->filetype == ELFCLASS32)
 	{
 		for (size_t i = 0;i < ctx->elfX.elf32.file_header->e_shnum;i++)
-			if (ctx->elfX.elf32.section_header[i].sh_type == SHT_SYMTAB || ctx->elfX.elf32.section_header[i].sh_type == SHT_DYNSYM)
-				list_symbols(ctx, i);
+			if (ctx->elfX.elf32.section_header[i].sh_type == SHT_SYMTAB)
+				return (list_symbols(ctx, i));
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		for (size_t i = 0;i < ctx->elfX.elf64.file_header->e_shnum;i++)
-			if (ctx->elfX.elf64.section_header[i].sh_type == SHT_SYMTAB || ctx->elfX.elf64.section_header[i].sh_type == SHT_DYNSYM)
-				list_symbols(ctx, i);
+			if (ctx->elfX.elf64.section_header[i].sh_type == SHT_SYMTAB)
+				return (list_symbols(ctx, i));
 	}
 }
 
