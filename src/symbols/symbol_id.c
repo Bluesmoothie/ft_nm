@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:22:29 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:27:15 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,21 +112,19 @@ static char	_notype_(t_context *ctx,void *sym, t_symbol *symbol)
 
 static char	_notype_default_(t_context *ctx,void *sym)
 {
-	Elf32_Sym	*sym32;
-	Elf64_Sym	*sym64;
 	char		*section_name;
 
 	if (ctx->filetype == ELFCLASS32)
 	{
-		sym32 = sym;
-		Elf32_Shdr	*section = ctx->elfX.elf32.section_header + sym32->st_shndx;
+		Elf32_Sym	*symX = sym;
+		Elf32_Shdr	*section = ctx->elfX.elf32.section_header + symX->st_shndx;
 
 		section_name = &ctx->strtab[section->sh_name];
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
-		sym64 = sym;
-		Elf64_Shdr	*section = ctx->elfX.elf64.section_header + sym64->st_shndx;
+		Elf64_Sym	*symX = sym;
+		Elf64_Shdr	*section = ctx->elfX.elf64.section_header + symX->st_shndx;
 
 		section_name = &ctx->strtab[section->sh_name];
 	}

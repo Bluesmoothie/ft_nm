@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:15:26 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:26:48 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ static void	list_symbols(t_context *ctx, size_t index)
 {
 	if (ctx->filetype == ELFCLASS32)
 	{
-		Elf32_Sym	*symX;
+		Elf32_Sym	*symX = ctx->file + ctx->elfX.elf32.section_header[index].sh_offset;
 
-		symX = ctx->file + ctx->elfX.elf32.section_header[index].sh_offset;
 		for (size_t i = 0;i < ctx->elfX.elf32.section_header[index].sh_size;symX++)
 		{
 			print_symbol(ctx, symX, ctx->elfX.elf32.section_header[index].sh_link);
@@ -46,9 +45,8 @@ static void	list_symbols(t_context *ctx, size_t index)
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
-		Elf64_Sym	*symX;
+		Elf64_Sym	*symX = ctx->file + ctx->elfX.elf64.section_header[index].sh_offset;
 
-		symX = ctx->file + ctx->elfX.elf64.section_header[index].sh_offset;
 		for (size_t i = 0;i < ctx->elfX.elf64.section_header[index].sh_size;symX++)
 		{
 			print_symbol(ctx, symX, ctx->elfX.elf64.section_header[index].sh_link);
