@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 18:11:36 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:40:17 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	print_symbol(t_context *ctx, void *sym, size_t link)
 {
 	const t_symbol	symbol = get_symbol_infos(ctx, sym, link);
 
-	if (symbol.id == ERR_SYM_ID || symbol.id == 'n' || symbol.id == 'N')
+	if (symbol.id == ERR_SYM_ID || symbol.id == 'n' || symbol.id == 'N' || NULL_SYMBOL(symbol))
 		return ;
 	printf("%s %c %s\n", symbol.strvalue, symbol.id, symbol.name);
 }

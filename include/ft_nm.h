@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:22:39 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:41:21 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-#define LOW_BASE_HEX	"0123456789abcdef"
-#define PSTR			"ft_nm"
-#define	ERR_SYM_ID		'?'
+#define LOW_BASE_HEX			"0123456789abcdef"
+#define PSTR					"ft_nm"
+#define	ERR_SYM_ID				'?'
+
+#define NULL_SYMBOL(symbol)		(!symbol.bind && !symbol.type && !symbol.shndx)
 
 typedef struct s_elf32
 {
