@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:43:59 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:27:15 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:32:52 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ static char	global_symbol(t_context *ctx, void *sym, t_symbol *symbol);
 static char	weak_symbol(t_context *ctx, void *sym, t_symbol *symbol);
 static char	local_symbol(t_context *ctx, void *sym, t_symbol *symbol);
 
+/*
+**	Determine the symbol char id from its parameters
+*/
 char	get_symbol_id(t_context *ctx, void *sym, t_symbol *symbol)
 {
 	switch (symbol->bind)

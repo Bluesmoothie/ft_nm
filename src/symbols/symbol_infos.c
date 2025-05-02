@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:06:54 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:29:04 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:32:16 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym);
 static char		*get_symbol_name(t_context *ctx, void *sym, size_t link);
 
+/*
+**	Fill the symbol struct with symbol infos
+*/
 t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link)
 {
 	t_symbol	symbol;

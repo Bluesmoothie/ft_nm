@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 19:43:36 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:26:48 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 16:31:51 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 static void		list_symbols(t_context *ctx, size_t index);
 static void		print_symbol(t_context *ctx, void *sym, size_t link);
 
+/*
+**	Search for symbols sections in all sections
+*/
 void	process_symbol_sections(t_context *ctx)
 {
 	if (ctx->filetype == ELFCLASS32)
@@ -31,6 +34,9 @@ void	process_symbol_sections(t_context *ctx)
 	}
 }
 
+/*
+**	List all symbols from a symbol section
+*/
 static void	list_symbols(t_context *ctx, size_t index)
 {
 	if (ctx->filetype == ELFCLASS32)
@@ -55,6 +61,9 @@ static void	list_symbols(t_context *ctx, size_t index)
 	}
 }
 
+/*
+**	Print symbol infos
+*/
 static void	print_symbol(t_context *ctx, void *sym, size_t link)
 {
 	const t_symbol	symbol = get_symbol_infos(ctx, sym, link);
