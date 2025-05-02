@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/01 16:20:18 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/02 15:03:13 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,31 @@ typedef struct s_elf64
 	Elf64_Shdr	*section_header;
 }	t_elf64;
 
+typedef union u_elfX
+{
+	t_elf32	elf32;
+	t_elf64	elf64;
+}	t_elfX;
+
 typedef struct s_context
 {
 	void	*file;
 	off_t	filesize;
 	char	filetype;
 	char	*strtab;
-	t_elf32	elf32;
-	t_elf64	elf64;
+	t_elfX	elfX;
 }	t_context;
 
 typedef struct s_symbol
 {
-	size_t	value;
-	char	type;
-	char	*name;
-	char	strvalue[17];
+	unsigned char	bind;
+	unsigned char	type;
+	size_t			shndx;
+	char			*section_name;
+	size_t			value;
+	char			id;
+	char			*name;
+	char			strvalue[17];
 }	t_symbol;
 
 //	main.c
