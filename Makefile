@@ -23,6 +23,8 @@ SRC_FILES		=	main						\
 					utils						\
 					symbols/symbol_id			\
 					symbols/symbol_infos		\
+					symbols/symbol_order		\
+					symbols/symbol_print		\
 					symbols/symbol				\
 
 SRC 			= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))

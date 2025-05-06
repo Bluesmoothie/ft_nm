@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:43:29 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 18:46:58 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/06 11:28:40 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <stdbool.h>
 
 #include "libft.h"
 #include "ft_printf.h"
@@ -29,7 +30,7 @@
 #define PSTR					"ft_nm"
 #define	ERR_SYM_ID				'?'
 
-#define NULL_SYMBOL(symbol)		(!symbol.bind && !symbol.type && !symbol.shndx)
+#define NULL_SYMBOL(symbol)		(!symbol->bind && !symbol->type && !symbol->shndx)
 
 #define SECTION_T(name)			(!ft_strcmp(name, ".text") || !ft_strcmp(name, ".plt"))
 #define SECTION_D(name)			(!ft_strcmp(name, ".data") || !ft_strcmp(name, ".init_array") || !ft_strcmp(name, ".fini_array")\
@@ -65,6 +66,7 @@ typedef struct s_context
 	char	filetype;
 	char	*strtab;
 	t_elfX	elfX;
+	t_list	*symbols;
 }	t_context;
 
 typedef struct s_symbol
@@ -97,7 +99,13 @@ void	get_str_value(t_symbol *symbol);
 char		get_symbol_id(t_context *ctx, void *sym, t_symbol *symbol);;
 
 //	symbol_infos.c
-t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link);
+t_symbol	*get_symbol_infos(t_context *ctx, void *sym, size_t link);
+
+//	symbol_order.c
+void		order_symbols(t_context *ctx);
+
+//	symbol_print.c
+void		print_symbols(t_context *ctx);
 
 //	symbol.c
-void		process_symbol_sections(t_context *ctx);
+void		process_symbols_section(t_context *ctx);

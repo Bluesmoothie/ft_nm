@@ -6,53 +6,52 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:06:54 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:32:16 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/06 11:29:17 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym);
-static char		*get_symbol_name(t_context *ctx, void *sym, size_t link);
+static void	get_symbol_base_infos(t_context *ctx, void *sym, t_symbol *symbol);
+static char	*get_symbol_name(t_context *ctx, void *sym, size_t link);
 
 /*
 **	Fill the symbol struct with symbol infos
 */
-t_symbol	get_symbol_infos(t_context *ctx, void *sym, size_t link)
+t_symbol	*get_symbol_infos(t_context *ctx, void *sym, size_t link)
 {
-	t_symbol	symbol;
+	t_symbol	*symbol;
 
-	symbol = get_symbol_base_infos(ctx, sym);
-	symbol.id = get_symbol_id(ctx, sym, &symbol);
-	symbol.name = get_symbol_name(ctx, sym, link);
-	get_str_value(&symbol);
+	symbol = ft_calloc(1, sizeof(t_symbol));
+	if (!symbol)
+		exit(-1);
+	get_symbol_base_infos(ctx, sym, symbol);
+	symbol->id = get_symbol_id(ctx, sym, symbol);
+	symbol->name = get_symbol_name(ctx, sym, link);
+	get_str_value(symbol);
 	return (symbol);
 }
 
-static t_symbol	get_symbol_base_infos(t_context *ctx, void *sym)
+static void	get_symbol_base_infos(t_context *ctx, void *sym, t_symbol *symbol)
 {
-	t_symbol	symbol;
-
-	ft_bzero(&symbol, sizeof(t_symbol));
 	if (ctx->filetype == ELFCLASS32)
 	{
 		Elf32_Sym		*symX = sym;
 
-		symbol.bind = ELF32_ST_BIND(symX->st_info);
-		symbol.type = ELF32_ST_TYPE(symX->st_info);
-		symbol.value = symX->st_value;
-		symbol.shndx = symX->st_shndx;
+		symbol->bind = ELF32_ST_BIND(symX->st_info);
+		symbol->type = ELF32_ST_TYPE(symX->st_info);
+		symbol->value = symX->st_value;
+		symbol->shndx = symX->st_shndx;
 	}
 	else if (ctx->filetype == ELFCLASS64)
 	{
 		Elf64_Sym		*symX = sym;
 
-		symbol.bind = ELF64_ST_BIND(symX->st_info);
-		symbol.type = ELF64_ST_TYPE(symX->st_info);
-		symbol.value = symX->st_value;
-		symbol.shndx = symX->st_shndx;
+		symbol->bind = ELF64_ST_BIND(symX->st_info);
+		symbol->type = ELF64_ST_TYPE(symX->st_info);
+		symbol->value = symX->st_value;
+		symbol->shndx = symX->st_shndx;
 	}
-	return (symbol);
 }
 
 static char	*get_symbol_name(t_context *ctx, void *sym, size_t link)

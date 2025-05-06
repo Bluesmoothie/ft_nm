@@ -6,7 +6,7 @@
 /*   By: ygille <ygille@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:07:45 by ygille            #+#    #+#             */
-/*   Updated: 2025/05/02 16:31:02 by ygille           ###   ########.fr       */
+/*   Updated: 2025/05/06 12:48:08 by ygille           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_nm(char *file)
 {
 	t_context	ctx;
 
+	ft_bzero(&ctx, sizeof(t_context));
 	open_file(&ctx, file);
 	get_file_type(&ctx);
 	switch (ctx.filetype)
@@ -30,13 +31,19 @@ void	ft_nm(char *file)
 		case	ELFCLASS32:
 		case	ELFCLASS64:
 			get_file_headers(&ctx);
-			process_symbol_sections(&ctx);
+			process_symbols_section(&ctx);
+			if (ctx.symbols)
+			{
+				// order_symbols(&ctx);
+				print_symbols(&ctx);
+			}
 			break;
 		default:
 			ft_printf("nm: %s: file format not recognized\n", file);
 			break;
 	}
 	munmap_helper(ctx.file, ctx.filesize);
+	ft_lstclear(&ctx.symbols, free);
 }
 
 static void	open_file(t_context *ctx ,char *file)
