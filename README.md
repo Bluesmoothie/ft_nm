@@ -2,6 +2,8 @@
 
 Like the nm command, list all the symbols in an ELF file
 
+![Screenshot](./nm.png)
+
 ## ELF Format
 
 ### Struct Elf32_Ehdr and Elf64_Ehdr
