@@ -31,9 +31,9 @@ Then check ```.e_ident[EI_CLASS]```
 ```.e_ident[EI_ABIVERSION]``` contains the ABI Version
 
 ```.e_type```  
-== ET_REL: .o  Object file
+== ET_REL: .o  Object file  
 == ET_EXEC: Executable  
-== ET_DYN: .so  Library
+== ET_DYN: .so  Library  
 == ET_CORE: core file  
 
 ```.e_machine``` Architecture
