@@ -1,3 +1,90 @@
+# FT_NM
+
+Like the nm command, list all the symbols in an ELF file
+
+## ELF Format
+
+### Struct Elf32_Ehdr and Elf64_Ehdr
+
+The ELF file header  
+At the very beginning of the file
+
+>[!NOTE]
+> The .e_ident element contain a magic number
+
+```c
+strcmp(.e_ident, "\177ELF":ELFMAG, 4:SELFMAG)
+```
+
+To verify if it's a valid ELF file
+
+Then check ```.e_ident[EI_CLASS]```  
+== ELFCLASS32: 32bit ELF File  
+== ELFCLASS64: 64bit ELF File
+
+```.e_ident[EI_DATA]```  
+== ELFDATA2LSB: little endian  
+== ELFDATA2MSB: big endian
+
+```.e_ident[EI_VERSION]``` contains info about the OS ABI ID
+
+```.e_ident[EI_ABIVERSION]``` contains the ABI Version
+
+```.e_type```  
+== ET_REL: .o  Object file
+== ET_EXEC: Executable  
+== ET_DYN: .so  Library
+== ET_CORE: core file  
+
+```.e_machine``` Architecture
+
+```.e_version``` Normally == EV_CURRENT
+
+```.e_shoff``` section header offset  
+```.e_shentsize```section header table size
+> [!NOTE]
+> The ELF file contain a succession of sections starting at .e_shoff and size of .e_shentzise that contains all the data
+
+```.e_shnum``` the number of entry in section header table
+
+```.e_shstrndx``` the section header string table index
+> [!NOTE]
+> This is where we can find the actual name of the symbols
+
+### Struct Elf32_Shdr and Elf64_Shdr
+
+The section header
+
+```.sh_type``` the section type
+
+The two sections types that interest us here are:
+
+- SHT_SYMTAB: Symbol table
+- SHT_DYNSYM: Dynamic symbol table
+
+### Progs headers
+
+```.e_phof``` prog header offset
+
+```.e_phentsiz``` prog header table size
+
+```.e_phnu``` number of entry in prog header table
+
+### Struct Elf32_Sym and Elf64_Sym
+
+The symbol table entry
+
+```.st_nam```    name
+```.st_valu```   value
+```.st_siz```    size
+```.st_inf```    type & binding
+```.st_othe```   visibility
+```.st_shnd```   index
+
+## Correspondance table
+
+Here are the rules to define the code that will be attributed to a symbol
+
 | Bind (`ELF64_ST_BIND`) | Type (`ELF64_ST_TYPE`) | `st_shndx` Value | Letter | Description | Source of Symbol Name |
 |------------------------|------------------------|------------------|--------|-------------|-----------------------|
 | `STB_LOCAL` (0)        | `STT_NOTYPE` (0)       | `SHN_UNDEF` (0)  | `u`    | Local undefined symbol (rare, debugging; **no value displayed**) | `.strtab` section, offset by `Elf64_Sym.st_name` (for `SHT_SYMTAB`) or `.dynstr` (for `SHT_DYNSYM`), via `sh_link` |
